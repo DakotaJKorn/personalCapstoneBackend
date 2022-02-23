@@ -36,8 +36,8 @@ public class UserService {
         }
         userRepository.save(user);
 
-        UserLogin userLogin = new UserLogin(user.getEmail(), user.getFirstName()+user.getLastName());
-        userLoginRepository.save(userLogin);
+        //UserLogin userLogin = new UserLogin(user.getEmail(), user.getFirstName()+user.getLastName());
+        //userLoginRepository.save(userLogin);
 
     }
 }
