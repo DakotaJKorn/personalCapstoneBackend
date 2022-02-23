@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    @SequenceGenerator(name = "user_sequence", sequenceName = "student_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
     private Long id;
     private String firstName;
@@ -15,6 +15,8 @@ public class User {
     private Integer addressID;
     private String phoneNumber;
     private String email;
+
+    public User(){}
 
     public User(Long id, String firstName, String lastName, Integer addressID, String phoneNumber, String email) {
         this.id = id;
@@ -25,7 +27,14 @@ public class User {
         this.email = email;
     }
 
-    public User(){}
+    public User(String firstName, String lastName, Integer addressID, String phoneNumber, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.addressID = addressID;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
 
     public Long getId() {
         return id;
