@@ -32,7 +32,7 @@ public class StudentService {
 
     public void addNewStudent(Student student) {
         Optional<Student> studentOptional = studentRepository.findStudentByEmail(student.getEmail());
-    //comment
+
         if(studentOptional.isPresent()) {
             throw new IllegalStateException("Email taken");
         }
@@ -46,7 +46,6 @@ public class StudentService {
         if(!exists){
             throw new IllegalStateException("Student with id " + studentId + " does not exist");
         }
-        System.out.println("HERE!!!");
         studentRepository.deleteById(studentId);
     }
 
