@@ -20,6 +20,7 @@ public class StudentController {
 
     @GetMapping
     public List<Student> getStudents(){
+        System.out.println("Made it here!");
         return studentService.getStudents();
     }
 
