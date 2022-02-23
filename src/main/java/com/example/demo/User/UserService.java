@@ -30,10 +30,13 @@ public class UserService {
 
     public void addNewUser(User user){
         Optional<UserLogin> emailExists = userLoginRepository.findUserLoginByEmail(user.getEmail());
-
+        System.out.println(emailExists);
+        Optional<User> phoneNumberExists = userRepository.findUserByPhoneNumber(user.getPhoneNumber());
+        System.out.println(phoneNumberExists);
         if(emailExists.isPresent()){
             throw new IllegalStateException("Email is already registered with a user.");
         }
+        System.out.println("Made it here!!!");
         userRepository.save(user);
 
         //UserLogin userLogin = new UserLogin(user.getEmail(), user.getFirstName()+user.getLastName());
