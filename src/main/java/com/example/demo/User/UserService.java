@@ -1,5 +1,7 @@
 package com.example.demo.User;
 
+import com.example.demo.UserAccounts.UserAccounts;
+import com.example.demo.UserAccounts.UserAccountsRepository;
 import com.example.demo.UserLogin.UserLogin;
 import com.example.demo.UserLogin.UserLoginRepository;
 import org.springframework.stereotype.Service;
@@ -12,10 +14,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserLoginRepository userLoginRepository;
+    private final UserAccountsRepository userAccountsRepository;
 
-    public UserService(UserRepository userRepository, UserLoginRepository userLoginRepository) {
+    public UserService(UserRepository userRepository, UserLoginRepository userLoginRepository, UserAccountsRepository userAccountsRepository) {
         this.userRepository = userRepository;
         this.userLoginRepository = userLoginRepository;
+        this.userAccountsRepository = userAccountsRepository;
     }
 
     public List<User> getUsers(){ return userRepository.findAll(); }
@@ -30,17 +34,19 @@ public class UserService {
 
     public void addNewUser(User user){
         Optional<UserLogin> emailExists = userLoginRepository.findUserLoginByEmail(user.getEmail());
-        System.out.println(emailExists);
         Optional<User> phoneNumberExists = userRepository.findUserByPhoneNumber(user.getPhoneNumber());
-        System.out.println(phoneNumberExists);
+
         if(emailExists.isPresent()){
             throw new IllegalStateException("Email is already registered with a user.");
         }
-        System.out.println("Made it here!!!");
+
         userRepository.save(user);
 
         UserLogin userLogin = new UserLogin(user.getEmail(), user.getFirstName()+user.getLastName());
         userLoginRepository.save(userLogin);
+
+        UserAccounts userAccounts = new UserAccounts(user.getId(), 0L , 0L);
+        userAccountsRepository.save(userAccounts);
 
     }
 }
