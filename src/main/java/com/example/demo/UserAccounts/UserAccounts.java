@@ -13,6 +13,8 @@ public class UserAccounts {
     private Long accountsTotal;
     private Long portfolioTotal;
 
+    public UserAccounts(){}
+
     public UserAccounts(Long id, Long accountsTotal, Long portfolioTotal) {
         this.id = id;
         this.accountsTotal = accountsTotal;
