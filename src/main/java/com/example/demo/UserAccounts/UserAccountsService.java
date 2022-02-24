@@ -31,7 +31,6 @@ public class UserAccountsService {
     public void updateUserAccount(Long userAccountID, Long accountTotal, Long portfolioTotal) {
         UserAccounts userAccounts = userAccountsRepository.findById(userAccountID).orElseThrow(() -> new IllegalStateException("user account with id does not exist"));
 
-        System.out.println("Account Total: " + accountTotal + " Portfolio Total: " + portfolioTotal);
         if(accountTotal != null && !Objects.equals(userAccounts.getAccountsTotal(),accountTotal)){
             userAccounts.setAccountsTotal(accountTotal);
         }

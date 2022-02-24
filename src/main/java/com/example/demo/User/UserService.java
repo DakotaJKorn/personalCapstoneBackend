@@ -5,8 +5,10 @@ import com.example.demo.UserAccounts.UserAccountsRepository;
 import com.example.demo.UserLogin.UserLogin;
 import com.example.demo.UserLogin.UserLoginRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -23,6 +25,10 @@ public class UserService {
     }
 
     public List<User> getUsers(){ return userRepository.findAll(); }
+
+    public User getUser(Long userId) {
+        return userRepository.getById(userId);
+    }
 
     public Optional<User> findStudentByPhoneNumber(String phoneNumber){
         Optional<User> userOptional = userRepository.findUserByPhoneNumber(phoneNumber);
@@ -48,5 +54,35 @@ public class UserService {
         UserAccounts userAccounts = new UserAccounts(user.getId(), 0L , 0L);
         userAccountsRepository.save(userAccounts);
 
+    }
+
+    @Transactional
+    public void updateUser(Long userID, String firstName, String lastName, Integer addressID, String phoneNumber, String email) {
+       User user = userRepository.findById(userID).orElseThrow(() -> new IllegalStateException("user account with id does not exist"));
+
+        if(firstName != null && !Objects.equals(user.getFirstName(),firstName)){
+            user.setFirstName(firstName);
+        }
+        if(lastName != null && !Objects.equals(user.getLastName(),lastName)){
+            user.setLastName(lastName);
+        }
+        if(addressID != null && !Objects.equals(user.getAddressID(),addressID)){
+            user.setAddressID(addressID);
+        }
+        if(phoneNumber != null && !Objects.equals(user.getPhoneNumber(),phoneNumber)){
+            user.setPhoneNumber(phoneNumber);
+        }
+        if(email != null && !Objects.equals(user.getEmail(),email)){
+            user.setEmail(email);
+        }
+    }
+
+    public void deleteUser(Long userId) {
+        boolean exists = userRepository.existsById(userId);
+
+        if(!exists){
+            throw new IllegalStateException("User account with id " + userId + " does not exist");
+        }
+        userRepository.deleteById(userId);
     }
 }
