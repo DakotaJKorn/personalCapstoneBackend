@@ -20,8 +20,8 @@ public class UserLoginService {
         return userLoginRepository.findAll();
     }
 
-    public UserLogin getUserLogin(Long id){
-        return userLoginRepository.findById(id).orElseThrow(() -> new IllegalStateException("user login with id does not exist"));
+    public UserLogin getUserLogin(String email){
+        return userLoginRepository.findUserLoginByEmail(email).orElseThrow(() -> new IllegalStateException("user login with id does not exist"));
     }
 
     public void createUserLogin(UserLogin userlogin) {

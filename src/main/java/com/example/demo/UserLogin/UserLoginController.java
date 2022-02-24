@@ -22,9 +22,9 @@ public class UserLoginController {
         return userLoginService.getUserLogins();
     }
 
-    @GetMapping(path = "{userLoginID}")
-    public UserLogin getUserLogin(@PathVariable("userLoginID") Long userLoginId){
-        return userLoginService.getUserLogin(userLoginId);
+    @GetMapping(path = "{userEmail}")
+    public UserLogin getUserLogin(@PathVariable("userEmail") String userEmail){
+        return userLoginService.getUserLogin(userEmail);
     }
 
     @PostMapping
