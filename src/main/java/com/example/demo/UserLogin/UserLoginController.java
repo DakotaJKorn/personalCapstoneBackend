@@ -39,7 +39,7 @@ public class UserLoginController {
 
     @PutMapping(path = "{userEmail}")
     public void updateUserAccount(
-            @PathVariable("userLoginID") String userEmail,
+            @PathVariable("userEmail") String userEmail,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String password
     ){
