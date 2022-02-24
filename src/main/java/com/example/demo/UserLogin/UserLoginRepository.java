@@ -12,6 +12,4 @@ public interface UserLoginRepository extends JpaRepository<UserLogin, Long> {
     @Query("SELECT u FROM UserLogin u WHERE u.email = ?1")
     Optional<UserLogin> findUserLoginByEmail(String email);
 
-    @Query("DELETE u FROM UserLogin u WHERE u.email = ?1")
-    void deleteByEmail(String email);
 }

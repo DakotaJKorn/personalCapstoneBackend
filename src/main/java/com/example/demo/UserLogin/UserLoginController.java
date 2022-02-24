@@ -37,12 +37,12 @@ public class UserLoginController {
         userLoginService.deleteUserLogin(email);
     }
 
-    @PutMapping(path = "{userLoginID}")
+    @PutMapping(path = "{userEmail}")
     public void updateUserAccount(
-            @PathVariable("userLoginID") Long userLoginID,
+            @PathVariable("userLoginID") String userEmail,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String password
     ){
-        userLoginService.updateUserLogin(userLoginID, email, password);
+        userLoginService.updateUserLogin(userEmail, email, password);
     }
 }

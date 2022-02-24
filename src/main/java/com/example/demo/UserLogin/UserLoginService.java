@@ -40,14 +40,20 @@ public class UserLoginService {
         if(!optionalUserLogin.isPresent()){
             throw new IllegalStateException("user login does not exist");
         }
-
-        userLoginRepository.deleteByEmail(email);
+        UserLogin toDelete = optionalUserLogin.get();
+        userLoginRepository.delete(toDelete);
     }
 
 
     @Transactional
-    public void updateUserLogin(Long userLoginID, String email, String password) {
-        UserLogin userLogin = userLoginRepository.findById(userLoginID).orElseThrow(() -> new IllegalStateException("user login with id does not exist"));
+    public void updateUserLogin(String userEmail, String email, String password) {
+        Optional<UserLogin> optionalUserLogin = userLoginRepository.findUserLoginByEmail(userEmail);
+
+        if(!optionalUserLogin.isPresent()){
+            throw new IllegalStateException("user login does not exist");
+        }
+
+        UserLogin userLogin = optionalUserLogin.get();
 
         if(password != null && password.length() > 0 && !Objects.equals(userLogin.getPassword(),password)){
             userLogin.setPassword(password);
