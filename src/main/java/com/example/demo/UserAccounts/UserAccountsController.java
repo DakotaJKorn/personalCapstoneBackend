@@ -1,5 +1,6 @@
 package com.example.demo.UserAccounts;
 
+import com.example.demo.UserLogin.UserLogin;
 import com.example.demo.student.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,11 @@ public class UserAccountsController {
     @GetMapping
     public List<UserAccounts> getUserAccounts(){
         return userAccountsService.getUserAccounts();
+    }
+
+    @GetMapping(path = "{userAccountID}")
+    public UserAccounts getUserAccount(@PathVariable("userAccountID") Long userAccountId){
+        return userAccountsService.getUserAccount(userAccountId);
     }
 
     @PostMapping

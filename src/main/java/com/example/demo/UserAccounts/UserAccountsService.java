@@ -21,14 +21,10 @@ public class UserAccountsService {
         return userAccountsRepository.findAll();
     }
 
-    public Optional<UserAccounts> getUserAccount(Long userAccountID){
-        Optional<UserAccounts> optionalUserAccounts = userAccountsRepository.findById(userAccountID);
+    public UserAccounts getUserAccount(Long userAccountID){
+        UserAccounts UserAccount = userAccountsRepository.findById(userAccountID).orElseThrow(() -> new IllegalStateException("user account with id does not exist"));
 
-        if(!optionalUserAccounts.isPresent()){
-            throw new IllegalStateException("User account with id " + userAccountID + " does not exist");
-        }
-
-        return  optionalUserAccounts;
+        return  UserAccount;
     }
 
     @Transactional
