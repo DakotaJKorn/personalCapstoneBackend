@@ -2,6 +2,7 @@ package com.example.demo.User;
 
 import com.example.demo.UserAccounts.UserAccounts;
 import com.example.demo.UserAccounts.UserAccountsRepository;
+import com.example.demo.UserAccounts.UserAccountsService;
 import com.example.demo.UserLogin.UserLogin;
 import com.example.demo.UserLogin.UserLoginRepository;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserLoginRepository userLoginRepository;
-    private final UserAccountsRepository userAccountsRepository;
+    private final UserAccountsService userAccountsService;
 
-    public UserService(UserRepository userRepository, UserLoginRepository userLoginRepository, UserAccountsRepository userAccountsRepository) {
+    public UserService(UserRepository userRepository, UserLoginRepository userLoginRepository, UserAccountsService userAccountsService) {
         this.userRepository = userRepository;
         this.userLoginRepository = userLoginRepository;
-        this.userAccountsRepository = userAccountsRepository;
+        this.userAccountsService = userAccountsService;
     }
 
     public List<User> getUsers(){ return userRepository.findAll(); }
@@ -46,7 +47,7 @@ public class UserService {
         userLoginRepository.save(userLogin);
 
         UserAccounts userAccounts = new UserAccounts(user.getId(), 0L , 0L);
-        userAccountsRepository.save(userAccounts);
+        userAccountsService.addNewUserAccount(userAccounts);
 
     }
 }
