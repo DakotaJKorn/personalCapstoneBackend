@@ -13,12 +13,9 @@ public class UserAccountsService {
 
     private UserAccountsRepository userAccountsRepository;
 
-    public UserAccountsService(){}
-
     public UserAccountsService(UserAccountsRepository userAccountsRepository) {
         this.userAccountsRepository = userAccountsRepository;
     }
-
 
     public List<UserAccounts> getUserAccounts() {
         return userAccountsRepository.findAll();
