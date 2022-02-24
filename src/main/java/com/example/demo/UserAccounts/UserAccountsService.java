@@ -46,6 +46,7 @@ public class UserAccountsService {
     }
 
     public void addNewUserAccount(UserAccounts userAccount) {
+        System.out.println("ACCESSING USER ACCOUNTS REPOSITORY");
         userAccountsRepository.save(userAccount);
     }
 }
