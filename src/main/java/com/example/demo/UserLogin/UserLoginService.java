@@ -34,14 +34,14 @@ public class UserLoginService {
         userLoginRepository.save(userlogin);
     }
 
-    public void deleteUserLogin(Long id) {
-        Optional<UserLogin> optionalUserLogin = userLoginRepository.findById(id);
+    public void deleteUserLogin(String email) {
+        Optional<UserLogin> optionalUserLogin = userLoginRepository.findUserLoginByEmail(email);
 
         if(!optionalUserLogin.isPresent()){
             throw new IllegalStateException("user login does not exist");
         }
 
-        userLoginRepository.deleteById(id);
+        userLoginRepository.deleteByEmail(email);
     }
 
 

@@ -32,9 +32,9 @@ public class UserLoginController {
         userLoginService.createUserLogin(userlogin);
     }
 
-    @DeleteMapping(path = "{userLoginID}")
-    public void deleteUserLogin(@PathVariable("userLoginID") Long userLoginId){
-        userLoginService.deleteUserLogin(userLoginId);
+    @DeleteMapping(path = "{userEmail}")
+    public void deleteUserLogin(@PathVariable("userEmail") String email){
+        userLoginService.deleteUserLogin(email);
     }
 
     @PutMapping(path = "{userLoginID}")
