@@ -46,6 +46,7 @@ public class UserService {
         UserLogin userLogin = new UserLogin(user.getEmail(), user.getFirstName()+user.getLastName());
         userLoginRepository.save(userLogin);
 
+        System.out.println("Made it to checkpoint 1");
         UserAccounts userAccounts = new UserAccounts(user.getId(), 0L , 0L);
         userAccountsService.addNewUserAccount(userAccounts);
 
