@@ -24,6 +24,16 @@ public class UserAccountsService {
         return userAccountsRepository.findAll();
     }
 
+    public Optional<UserAccounts> getUserAccount(Long userAccountID){
+        Optional<UserAccounts> optionalUserAccounts = userAccountsRepository.findById(userAccountID);
+
+        if(!optionalUserAccounts.isPresent()){
+            throw new IllegalStateException("User account with id " + userAccountID + " does not exist");
+        }
+
+        return  optionalUserAccounts;
+    }
+
     @Transactional
     public void updateUserAccount(Long userAccountID, Long accountTotal, Long portfolioTotal) {
         UserAccounts userAccounts = userAccountsRepository.findById(userAccountID).orElseThrow(() -> new IllegalStateException("user account with id does not exist"));
@@ -46,8 +56,8 @@ public class UserAccountsService {
     }
 
     public void addNewUserAccount(UserAccounts userAccount) {
-        System.out.println("ACCESSING USER ACCOUNTS REPOSITORY");
-        System.out.println(userAccount);
         userAccountsRepository.save(userAccount);
     }
+
+
 }
