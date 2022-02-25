@@ -1,5 +1,7 @@
 package com.example.demo.UserLogin;
 
+import com.example.demo.User.User;
+import com.example.demo.User.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,9 +13,11 @@ import java.util.Optional;
 public class UserLoginService {
 
     private final UserLoginRepository userLoginRepository;
+    private final UserRepository userRepository;
 
-    public UserLoginService(UserLoginRepository userLoginRepository) {
+    public UserLoginService(UserLoginRepository userLoginRepository, UserRepository userRepository) {
         this.userLoginRepository = userLoginRepository;
+        this.userRepository = userRepository;
     }
 
     public List<UserLogin> getUserLogins() {
@@ -65,5 +69,17 @@ public class UserLoginService {
             }
             userLogin.setEmail(email);
         }
+    }
+
+    public User loginAttempt(UserLogin userLogin) {
+
+        UserLogin userlogin1 = userLoginRepository.findUserLoginByEmail(userLogin.getEmail()).orElseThrow(() -> new IllegalStateException("Invalid Email"));
+
+        if(!Objects.equals(userLogin.getPassword(), userlogin1.getPassword())){
+            throw new IllegalStateException("Password Incorrect");
+        }
+
+        return userRepository.findByEmail(userLogin.getEmail());
+
     }
 }

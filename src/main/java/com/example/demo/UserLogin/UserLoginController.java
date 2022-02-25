@@ -1,10 +1,12 @@
 package com.example.demo.UserLogin;
 
+import com.example.demo.User.User;
 import com.example.demo.UserAccounts.UserAccounts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "userlogin")
@@ -44,5 +46,10 @@ public class UserLoginController {
             @RequestParam(required = false) String password
     ){
         userLoginService.updateUserLogin(userEmail, email, password);
+    }
+
+    @GetMapping(path = "loginAttempt")
+    public User loginAttempt(@RequestBody UserLogin userLogin) {
+        return userLoginService.loginAttempt(userLogin);
     }
 }
