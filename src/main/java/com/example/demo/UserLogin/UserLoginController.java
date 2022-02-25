@@ -49,7 +49,10 @@ public class UserLoginController {
     }
 
     @GetMapping(path = "loginAttempt")
-    public User loginAttempt(@RequestBody UserLogin userLogin) {
+    public User loginAttempt(@RequestParam(required = true) String email,
+                             @RequestParam(required = true) String password) {
+
+        UserLogin userLogin = new UserLogin(email,password);
         return userLoginService.loginAttempt(userLogin);
     }
 }
