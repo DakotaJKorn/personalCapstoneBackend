@@ -20,6 +20,10 @@ public class PracticeApplication {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/userlogin").allowedOrigins("https://finalprojectdakota.web.app");
+				registry.addMapping("/userlogin/loginattempt").allowedOrigins("https://finalprojectdakota.web.app");
+				registry.addMapping("/useraccounts").allowedOrigins("https://finalprojectdakota.web.app");
+				registry.addMapping("/userlogin").allowedOrigins("https://finalprojectdakota.web.app");
+				registry.addMapping("/user").allowedOrigins("https://finalprojectdakota.web.app");
 			}
 		};
 	}
