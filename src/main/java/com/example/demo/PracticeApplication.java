@@ -22,7 +22,6 @@ public class PracticeApplication {
 				registry.addMapping("/**")
 						.allowedMethods("*")
 						.allowedOrigins("https://finalprojectdakota.web.app")
-						.allowedOrigins("localhost:4200")
 						.allowedHeaders("*")
 						.allowCredentials(false)
 						.maxAge(-1);
