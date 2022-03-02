@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class UserLoginService {
     }
 
     public UserLogin getUserLogin(String email){
-        return userLoginRepository.findUserLoginByEmail(email).orElseThrow(() -> new IllegalStateException("user login with id does not exist"));
+        return userLoginRepository.findUserLoginByEmail(email).orElseThrow(() -> new NoSuchElementException("user login with id does not exist"));
     }
 
     public void createUserLogin(UserLogin userlogin) {
