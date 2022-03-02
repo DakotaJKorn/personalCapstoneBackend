@@ -4,6 +4,8 @@ import com.example.demo.UserAccounts.UserAccounts;
 import com.example.demo.UserAccounts.UserAccountsRepository;
 import com.example.demo.UserLogin.UserLogin;
 import com.example.demo.UserLogin.UserLoginRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,20 +32,13 @@ public class UserService {
         return userRepository.getById(userId);
     }
 
-    public Optional<User> findStudentByPhoneNumber(String phoneNumber){
-        Optional<User> userOptional = userRepository.findUserByPhoneNumber(phoneNumber);
-        if(!userOptional.isPresent()){
-            throw new IllegalStateException("User could not be found");
-        }
-        return userOptional;
-    }
 
-    public void addNewUser(User user){
+    public ResponseEntity addNewUser(User user){
         Optional<UserLogin> emailExists = userLoginRepository.findUserLoginByEmail(user.getEmail());
         Optional<User> phoneNumberExists = userRepository.findUserByPhoneNumber(user.getPhoneNumber());
 
         if(emailExists.isPresent()){
-            throw new IllegalStateException("Email is already registered with a user.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
 
         userRepository.save(user);
@@ -54,11 +49,23 @@ public class UserService {
         UserAccounts userAccounts = new UserAccounts(user.getId(), 0L , 0L);
         userAccountsRepository.save(userAccounts);
 
+        return null;
     }
 
     @Transactional
-    public void updateUser(Long userID, String firstName, String lastName, Integer addressID, String phoneNumber, String email) {
-       User user = userRepository.findById(userID).orElseThrow(() -> new IllegalStateException("user account with id does not exist"));
+    public ResponseEntity updateUser(Long userID, String firstName, String lastName, Integer addressID, String phoneNumber, String email) {
+        Optional<User> userOptional = userRepository.findById(userID);
+
+        if(!userOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        User user = userOptional.get();
+        Optional<UserLogin> emailExists = userLoginRepository.findUserLoginByEmail(email);
+
+        if(emailExists.isPresent() && !Objects.equals(user.getEmail(),email)){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+        }
 
         if(firstName != null && !Objects.equals(user.getFirstName(),firstName)){
             user.setFirstName(firstName);
@@ -75,6 +82,7 @@ public class UserService {
         if(email != null && !Objects.equals(user.getEmail(),email)){
             user.setEmail(email);
         }
+        return ResponseEntity.ok(null);
     }
 
     public void deleteUser(Long userId) {

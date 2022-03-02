@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -38,14 +37,15 @@ public class UserLoginService {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
-    public void createUserLogin(UserLogin userlogin) {
+    public ResponseEntity createUserLogin(UserLogin userlogin) {
         Optional<UserLogin> optionalUserLogin = userLoginRepository.findUserLoginByEmail(userlogin.getEmail());
 
         if(optionalUserLogin.isPresent()){
-            throw new IllegalStateException("email already exists");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
         }
 
         userLoginRepository.save(userlogin);
+        return null;
     }
 
     public void deleteUserLogin(String email) {

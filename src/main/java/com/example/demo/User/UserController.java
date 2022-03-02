@@ -1,6 +1,7 @@
 package com.example.demo.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,12 +28,12 @@ public class UserController {
     }
 
     @PostMapping
-    public void registerUser(@RequestBody User user){
-        userService.addNewUser(user);
+    public ResponseEntity registerUser(@RequestBody User user){
+        return userService.addNewUser(user);
     }
 
     @PutMapping(path = "{userID}")
-    public void updateUser(
+    public ResponseEntity updateUser(
             @PathVariable("userID") Long userID,
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName,
@@ -40,7 +41,7 @@ public class UserController {
             @RequestParam(required = false) String phoneNumber,
             @RequestParam(required = false) String email
     ){
-        userService.updateUser(userID,firstName,lastName,addressID,phoneNumber,email);
+        return userService.updateUser(userID,firstName,lastName,addressID,phoneNumber,email);
     }
 
     @DeleteMapping(path = "{userID}")
