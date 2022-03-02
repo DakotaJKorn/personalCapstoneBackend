@@ -3,6 +3,7 @@ package com.example.demo.UserLogin;
 import com.example.demo.User.User;
 import com.example.demo.UserAccounts.UserAccounts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class UserLoginController {
     }
 
     @GetMapping(path = "{userEmail}")
-    public UserLogin getUserLogin(@PathVariable("userEmail") String userEmail){
+    public ResponseEntity<UserLogin> getUserLogin(@PathVariable("userEmail") String userEmail){
         return userLoginService.getUserLogin(userEmail);
     }
 
@@ -49,8 +50,8 @@ public class UserLoginController {
     }
 
     @GetMapping(path = "loginAttempt")
-    public User loginAttempt(@RequestParam(required = true) String email,
-                             @RequestParam(required = true) String password) {
+    public ResponseEntity<User> loginAttempt(@RequestParam(required = true) String email,
+                                             @RequestParam(required = true) String password) {
 
         UserLogin userLogin = new UserLogin(email,password);
         return userLoginService.loginAttempt(userLogin);
