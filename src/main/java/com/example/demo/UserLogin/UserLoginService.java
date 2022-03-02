@@ -2,6 +2,8 @@ package com.example.demo.UserLogin;
 
 import com.example.demo.User.User;
 import com.example.demo.User.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +27,15 @@ public class UserLoginService {
         return userLoginRepository.findAll();
     }
 
-    public UserLogin getUserLogin(String email){
-        return userLoginRepository.findUserLoginByEmail(email).orElseThrow(() -> new NoSuchElementException("user login with id does not exist"));
+    public ResponseEntity<UserLogin> getUserLogin(String email){
+        //return userLoginRepository.findUserLoginByEmail(email).orElseThrow(() -> new NoSuchElementException("user login with id does not exist"));
+
+        Optional<UserLogin> userLoginOptional = userLoginRepository.findUserLoginByEmail(email);
+
+        if(userLoginOptional.isPresent()){
+            return ResponseEntity.ok(userLoginOptional.get());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
     public void createUserLogin(UserLogin userlogin) {
@@ -72,15 +81,19 @@ public class UserLoginService {
         }
     }
 
-    public User loginAttempt(UserLogin userLogin) {
+    public ResponseEntity<User> loginAttempt(UserLogin userLogin) {
 
-        UserLogin userlogin1 = userLoginRepository.findUserLoginByEmail(userLogin.getEmail()).orElseThrow(() -> new IllegalStateException("Invalid Email"));
+        Optional<UserLogin> userLoginOptional = userLoginRepository.findUserLoginByEmail(userLogin.getEmail());
 
-        if(!Objects.equals(userLogin.getPassword(), userlogin1.getPassword())){
-            throw new IllegalStateException("Password Incorrect");
+        if(!userLoginOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
-        return userRepository.findByEmail(userLogin.getEmail());
+        if(!Objects.equals(userLogin.getPassword(), userLoginOptional.get().getPassword())){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        return ResponseEntity.ok(userRepository.findByEmail(userLogin.getEmail()));
 
     }
 }
