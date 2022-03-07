@@ -26,10 +26,24 @@ public class UserService {
         this.userAccountsRepository = userAccountsRepository;
     }
 
-    public List<User> getUsers(){ return userRepository.findAll(); }
+    public ResponseEntity<List<User>> getUsers(){
+        List<User> users = userRepository.findAll();
 
-    public User getUser(Long userId) {
-        return userRepository.getById(userId);
+        if(users.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.ok(users);
+    }
+
+    public ResponseEntity<User> getUser(Long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+
+        if(!userOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        return ResponseEntity.ok(userOptional.get());
     }
 
 
@@ -49,7 +63,7 @@ public class UserService {
         UserAccounts userAccounts = new UserAccounts(user.getId(), 0L , 0L);
         userAccountsRepository.save(userAccounts);
 
-        return null;
+        return ResponseEntity.ok(null);
     }
 
     @Transactional
@@ -85,12 +99,13 @@ public class UserService {
         return ResponseEntity.ok(null);
     }
 
-    public void deleteUser(Long userId) {
+    public ResponseEntity deleteUser(Long userId) {
         boolean exists = userRepository.existsById(userId);
 
         if(!exists){
-            throw new IllegalStateException("User account with id " + userId + " does not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         userRepository.deleteById(userId);
+        return ResponseEntity.ok(null);
     }
 }

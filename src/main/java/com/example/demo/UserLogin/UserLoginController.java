@@ -21,7 +21,7 @@ public class UserLoginController {
     }
 
     @GetMapping
-    public List<UserLogin> getUserLogins(){
+    public ResponseEntity<List<UserLogin>> getUserLogins(){
         return userLoginService.getUserLogins();
     }
 
@@ -36,17 +36,17 @@ public class UserLoginController {
     }
 
     @DeleteMapping(path = "{userEmail}")
-    public void deleteUserLogin(@PathVariable("userEmail") String email){
-        userLoginService.deleteUserLogin(email);
+    public ResponseEntity deleteUserLogin(@PathVariable("userEmail") String email){
+        return userLoginService.deleteUserLogin(email);
     }
 
     @PutMapping(path = "{userEmail}")
-    public void updateUserAccount(
+    public ResponseEntity updateUserAccount(
             @PathVariable("userEmail") String userEmail,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String password
     ){
-        userLoginService.updateUserLogin(userEmail, email, password);
+        return userLoginService.updateUserLogin(userEmail, email, password);
     }
 
     @GetMapping(path = "loginAttempt")

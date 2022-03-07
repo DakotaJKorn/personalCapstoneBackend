@@ -1,6 +1,7 @@
 package com.example.demo.UserAccounts;
 
-import com.example.demo.student.Student;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,19 +18,28 @@ public class UserAccountsService {
         this.userAccountsRepository = userAccountsRepository;
     }
 
-    public List<UserAccounts> getUserAccounts() {
-        return userAccountsRepository.findAll();
+    public ResponseEntity<List<UserAccounts>> getUserAccounts() {
+        return ResponseEntity.ok(userAccountsRepository.findAll());
     }
 
-    public UserAccounts getUserAccount(Long userAccountID){
-        UserAccounts UserAccount = userAccountsRepository.findById(userAccountID).orElseThrow(() -> new IllegalStateException("user account with id does not exist"));
+    public ResponseEntity<UserAccounts> getUserAccount(Long userAccountID){
+        Optional<UserAccounts> userAccount = userAccountsRepository.findById(userAccountID);
 
-        return  UserAccount;
+        if(!userAccount.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(userAccount.get());
     }
 
     @Transactional
-    public void updateUserAccount(Long userAccountID, Long accountTotal, Long portfolioTotal) {
-        UserAccounts userAccounts = userAccountsRepository.findById(userAccountID).orElseThrow(() -> new IllegalStateException("user account with id does not exist"));
+    public ResponseEntity updateUserAccount(Long userAccountID, Long accountTotal, Long portfolioTotal) {
+        Optional<UserAccounts> optionalUserAccounts = userAccountsRepository.findById(userAccountID);
+
+        if(!optionalUserAccounts.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        UserAccounts userAccounts = optionalUserAccounts.get();
 
         if(accountTotal != null && !Objects.equals(userAccounts.getAccountsTotal(),accountTotal)){
             userAccounts.setAccountsTotal(accountTotal);
@@ -37,19 +47,24 @@ public class UserAccountsService {
         if(portfolioTotal != null && !Objects.equals(userAccounts.getPortfolioTotal(),portfolioTotal)){
             userAccounts.setPortfolioTotal(portfolioTotal);
         }
+
+        return ResponseEntity.ok(null);
     }
 
-    public void deleteUserAccount(Long userAccountsId) {
+    public ResponseEntity deleteUserAccount(Long userAccountsId) {
         boolean exists = userAccountsRepository.existsById(userAccountsId);
 
         if(!exists){
-            throw new IllegalStateException("User account with id " + userAccountsId + " does not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
         userAccountsRepository.deleteById(userAccountsId);
+
+        return ResponseEntity.ok(null);
     }
 
-    public void addNewUserAccount(UserAccounts userAccount) {
+    public ResponseEntity addNewUserAccount(UserAccounts userAccount) {
         userAccountsRepository.save(userAccount);
+        return ResponseEntity.ok(null);
     }
 
 

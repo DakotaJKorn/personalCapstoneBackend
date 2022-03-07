@@ -1,8 +1,7 @@
 package com.example.demo.UserAccounts;
 
-import com.example.demo.UserLogin.UserLogin;
-import com.example.demo.student.Student;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,32 +18,32 @@ public class UserAccountsController {
     }
 
     @GetMapping
-    public List<UserAccounts> getUserAccounts(){
+    public ResponseEntity<List<UserAccounts>> getUserAccounts(){
         return userAccountsService.getUserAccounts();
     }
 
     @GetMapping(path = "{userAccountID}")
-    public UserAccounts getUserAccount(@PathVariable("userAccountID") Long userAccountId){
+    public ResponseEntity<UserAccounts> getUserAccount(@PathVariable("userAccountID") Long userAccountId){
         return userAccountsService.getUserAccount(userAccountId);
     }
 
     @PostMapping
-    public void registerNewStudent(UserAccounts userAccount){
-        userAccountsService.addNewUserAccount(userAccount);
+    public ResponseEntity registerNewStudent(UserAccounts userAccount){
+        return userAccountsService.addNewUserAccount(userAccount);
     }
 
     @DeleteMapping(path = "{userAccountsID}")
-    public void deleteUserAccount(@PathVariable("userAccountsID") Long userAccountsId){
-        userAccountsService.deleteUserAccount(userAccountsId);
+    public ResponseEntity deleteUserAccount(@PathVariable("userAccountsID") Long userAccountsId){
+        return userAccountsService.deleteUserAccount(userAccountsId);
     }
 
     @PutMapping(path = "{userAccountsID}")
-    public void updateUserAccount(
+    public ResponseEntity updateUserAccount(
             @PathVariable("userAccountsID") Long userAccountsID,
             @RequestParam(required = false) Long accountTotal,
             @RequestParam(required = false) Long portfolioTotal
     ){
-        userAccountsService.updateUserAccount(userAccountsID, accountTotal, portfolioTotal);
+        return userAccountsService.updateUserAccount(userAccountsID, accountTotal, portfolioTotal);
     }
 
 }

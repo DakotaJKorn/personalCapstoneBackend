@@ -18,12 +18,12 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getUsers(){
+    public ResponseEntity<List<User>> getUsers(){
         return userService.getUsers();
     }
 
     @GetMapping(path = "{userID}")
-    public User getUser(@PathVariable("userID") Long userId){
+    public ResponseEntity<User> getUser(@PathVariable("userID") Long userId){
         return userService.getUser(userId);
     }
 
@@ -45,8 +45,8 @@ public class UserController {
     }
 
     @DeleteMapping(path = "{userID}")
-    public void deleteUserAccount(@PathVariable("userID") Long userId){
-        userService.deleteUser(userId);
+    public ResponseEntity deleteUserAccount(@PathVariable("userID") Long userId){
+        return userService.deleteUser(userId);
     }
 
 

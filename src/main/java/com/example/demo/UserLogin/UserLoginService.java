@@ -22,13 +22,11 @@ public class UserLoginService {
         this.userRepository = userRepository;
     }
 
-    public List<UserLogin> getUserLogins() {
-        return userLoginRepository.findAll();
+    public  ResponseEntity<List<UserLogin>> getUserLogins() {
+        return ResponseEntity.ok(userLoginRepository.findAll());
     }
 
     public ResponseEntity<UserLogin> getUserLogin(String email){
-        //return userLoginRepository.findUserLoginByEmail(email).orElseThrow(() -> new NoSuchElementException("user login with id does not exist"));
-
         Optional<UserLogin> userLoginOptional = userLoginRepository.findUserLoginByEmail(email);
 
         if(userLoginOptional.isPresent()){
@@ -48,23 +46,24 @@ public class UserLoginService {
         return null;
     }
 
-    public void deleteUserLogin(String email) {
+    public ResponseEntity deleteUserLogin(String email) {
         Optional<UserLogin> optionalUserLogin = userLoginRepository.findUserLoginByEmail(email);
 
         if(!optionalUserLogin.isPresent()){
-            throw new IllegalStateException("user login does not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        UserLogin toDelete = optionalUserLogin.get();
-        userLoginRepository.delete(toDelete);
+
+        userLoginRepository.delete(optionalUserLogin.get());
+        return ResponseEntity.ok(null);
     }
 
 
     @Transactional
-    public void updateUserLogin(String userEmail, String email, String password) {
+    public ResponseEntity updateUserLogin(String userEmail, String email, String password) {
         Optional<UserLogin> optionalUserLogin = userLoginRepository.findUserLoginByEmail(userEmail);
 
         if(!optionalUserLogin.isPresent()){
-            throw new IllegalStateException("user login does not exist");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 
         UserLogin userLogin = optionalUserLogin.get();
@@ -75,10 +74,11 @@ public class UserLoginService {
         if(email != null && email.length() > 0 && !Objects.equals(userLogin.getEmail(),email)){
             Optional<UserLogin> userLoginOptional = userLoginRepository.findUserLoginByEmail(email);
             if(userLoginOptional.isPresent()){
-                throw new IllegalStateException("email taken");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
             }
             userLogin.setEmail(email);
         }
+        return ResponseEntity.ok(null);
     }
 
     public ResponseEntity<User> loginAttempt(UserLogin userLogin) {
