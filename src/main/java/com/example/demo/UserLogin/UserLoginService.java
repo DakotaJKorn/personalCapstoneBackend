@@ -83,16 +83,21 @@ public class UserLoginService {
 
     public ResponseEntity<User> loginAttempt(UserLogin userLogin) {
 
+        System.out.println("0");
         Optional<UserLogin> userLoginOptional = userLoginRepository.findUserLoginByEmail(userLogin.getEmail());
 
         if(!userLoginOptional.isPresent()){
+            System.out.println("1");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+
         }
 
         if(!Objects.equals(userLogin.getPassword(), userLoginOptional.get().getPassword())){
+            System.out.println("2");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
 
+        System.out.println("3");
         return ResponseEntity.ok(userRepository.findByEmail(userLogin.getEmail()));
 
     }
