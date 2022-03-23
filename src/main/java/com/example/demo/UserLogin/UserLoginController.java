@@ -54,6 +54,7 @@ public class UserLoginController {
                                              @RequestParam(required = true) String password) {
 
         UserLogin userLogin = new UserLogin(email,password);
+        System.out.println(userLogin);
         return userLoginService.loginAttempt(userLogin);
     }
 }

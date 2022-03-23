@@ -83,6 +83,8 @@ public class UserLoginService {
 
     public ResponseEntity<User> loginAttempt(UserLogin userLogin) {
 
+        System.out.println(userLogin);
+
         System.out.println("0");
         Optional<UserLogin> userLoginOptional = userLoginRepository.findUserLoginByEmail(userLogin.getEmail());
 
