@@ -31,7 +31,7 @@ public class UserLoginController {
     }
 
     @PostMapping
-    public ResponseEntity createUserLogin(@RequestBody UserLogin userLogin){
+    public ResponseEntity createUserLogin(UserLogin userLogin){
         System.out.println(userLogin);
         return userLoginService.createUserLogin(userLogin);
     }
