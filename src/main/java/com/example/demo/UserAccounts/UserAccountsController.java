@@ -28,7 +28,7 @@ public class UserAccountsController {
     }
 
     @PostMapping
-    public ResponseEntity registerNewStudent(UserAccounts userAccount){
+    public ResponseEntity registerNewAccount(UserAccounts userAccount){
         return userAccountsService.addNewUserAccount(userAccount);
     }
 

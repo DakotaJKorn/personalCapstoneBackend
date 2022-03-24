@@ -31,8 +31,10 @@ public class UserLoginController {
     }
 
     @PostMapping
-    public ResponseEntity createUserLogin(UserLogin userlogin){
-        return userLoginService.createUserLogin(userlogin);
+    public ResponseEntity createUserLogin(@RequestParam(required = true) String email,
+                                          @RequestParam(required = true) String password){
+        UserLogin newUser = new UserLogin(email,password);
+        return userLoginService.createUserLogin(newUser);
     }
 
     @DeleteMapping(path = "{userEmail}")
@@ -54,7 +56,6 @@ public class UserLoginController {
                                              @RequestParam(required = true) String password) {
 
         UserLogin userLogin = new UserLogin(email,password);
-        System.out.println(userLogin);
         return userLoginService.loginAttempt(userLogin);
     }
 }
