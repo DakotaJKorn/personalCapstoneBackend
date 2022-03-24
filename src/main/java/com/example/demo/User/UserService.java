@@ -47,12 +47,15 @@ public class UserService {
     }
 
 
-    public ResponseEntity addNewUser(User user){
+    public ResponseEntity addNewUser(UserLogin userLogin1, User user){
+
+        System.out.println(userLogin1);
+        System.out.println(user);
+
         Optional<UserLogin> emailExists = userLoginRepository.findUserLoginByEmail(user.getEmail());
-        Optional<User> phoneNumberExists = userRepository.findUserByPhoneNumber(user.getPhoneNumber());
 
         if(emailExists.isPresent()){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already exists");
         }
 
         userRepository.save(user);

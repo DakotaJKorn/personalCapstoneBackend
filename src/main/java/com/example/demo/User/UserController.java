@@ -1,5 +1,6 @@
 package com.example.demo.User;
 
+import com.example.demo.UserLogin.UserLogin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +29,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity registerUser(@RequestBody User user){
-        return userService.addNewUser(user);
+    public ResponseEntity registerUser(@RequestParam(required = false) String firstName,
+                                       @RequestParam(required = false) String lastName,
+                                       @RequestParam(required = false) Integer addressID,
+                                       @RequestParam(required = false) String phoneNumber,
+                                       @RequestParam(required = false) String email,
+                                       @RequestParam(required = false) String password
+                                       ){
+        return userService.addNewUser(new UserLogin(email, password), new User(firstName,lastName,addressID,phoneNumber, email));
     }
 
     @PutMapping(path = "{userID}")
