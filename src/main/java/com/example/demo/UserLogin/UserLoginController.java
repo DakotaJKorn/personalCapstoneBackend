@@ -31,8 +31,11 @@ public class UserLoginController {
     }
 
     @PostMapping
-    public ResponseEntity createUserLogin(UserLogin userLogin){
-        System.out.println(userLogin);
+    public ResponseEntity createUserLogin(@RequestBody Object body){
+        System.out.println("---------------------------------------------------------------------------------------------------");
+        System.out.println(body);
+        System.out.println("---------------------------------------------------------------------------------------------------");
+        UserLogin userLogin = (UserLogin) body;
         return userLoginService.createUserLogin(userLogin);
     }
 
