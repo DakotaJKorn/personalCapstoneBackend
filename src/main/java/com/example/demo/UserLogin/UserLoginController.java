@@ -31,11 +31,9 @@ public class UserLoginController {
     }
 
     @PostMapping
-    public ResponseEntity createUserLogin(@RequestBody Object body){
-        System.out.println("---------------------------------------------------------------------------------------------------");
-        System.out.println(body);
-        System.out.println("---------------------------------------------------------------------------------------------------");
-        UserLogin userLogin = (UserLogin) body;
+    public ResponseEntity createUserLogin(@RequestParam(required = true) String email,
+                                          @RequestParam(required = true) String password){
+        UserLogin userLogin = new UserLogin(email,password);
         return userLoginService.createUserLogin(userLogin);
     }
 
