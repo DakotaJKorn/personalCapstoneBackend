@@ -31,12 +31,12 @@ public class UserController {
     @PostMapping
     public ResponseEntity registerUser(@RequestParam(required = false) String firstName,
                                        @RequestParam(required = false) String lastName,
-                                       @RequestParam(required = false) Integer addressID,
+                                       //@RequestParam(required = false) Integer addressID,
                                        @RequestParam(required = false) String phoneNumber,
                                        @RequestParam(required = false) String email,
                                        @RequestParam(required = false) String password
                                        ){
-        return userService.addNewUser(new UserLogin(email, password), new User(firstName,lastName,addressID,phoneNumber, email));
+        return userService.addNewUser(new UserLogin(email, password), new User(firstName,lastName,1,phoneNumber, email));
     }
 
     @PutMapping(path = "{userID}")

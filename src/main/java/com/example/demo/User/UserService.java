@@ -47,10 +47,15 @@ public class UserService {
     }
 
 
-    public ResponseEntity addNewUser(UserLogin userLogin1, User user){
+    public ResponseEntity addNewUser(UserLogin userLogin, User user){
 
-        System.out.println(userLogin1);
-        System.out.println(user);
+        System.out.println("________________________________________________________________________________");
+        System.out.println("MADE IT HERE");
+        System.out.println("________________________________________________________________________________");
+        System.out.println(userLogin.toString());
+        System.out.println("________________________________________________________________________________");
+        System.out.println(user.toString());
+        System.out.println("________________________________________________________________________________");
 
         Optional<UserLogin> emailExists = userLoginRepository.findUserLoginByEmail(user.getEmail());
 
@@ -60,13 +65,23 @@ public class UserService {
 
         userRepository.save(user);
 
-        UserLogin userLogin = new UserLogin(user.getEmail(), user.getFirstName()+user.getLastName());
+        System.out.println("________________________________________________________________________________");
+        System.out.println("SAVED USER");
+        System.out.println("________________________________________________________________________________");
+
         userLoginRepository.save(userLogin);
+        System.out.println("________________________________________________________________________________");
+        System.out.println("SAVED USER LOGIN");
+        System.out.println("________________________________________________________________________________");
+
 
         UserAccounts userAccounts = new UserAccounts(user.getId(), 0L , 0L);
         userAccountsRepository.save(userAccounts);
+        System.out.println("________________________________________________________________________________");
+        System.out.println("SAVED USER ACCOUNTS" + user.getId());
+        System.out.println("________________________________________________________________________________");
 
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok("Success");
     }
 
     @Transactional
