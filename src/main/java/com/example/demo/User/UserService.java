@@ -75,13 +75,13 @@ public class UserService {
         System.out.println("________________________________________________________________________________");
 
 
-        UserAccounts userAccounts = new UserAccounts(user.getId(), 0L , 0L);
+        UserAccounts userAccounts = new UserAccounts(user.getId(), 200000L , 600000L);
         userAccountsRepository.save(userAccounts);
         System.out.println("________________________________________________________________________________");
         System.out.println("SAVED USER ACCOUNTS" + user.getId());
         System.out.println("________________________________________________________________________________");
 
-        return ResponseEntity.ok("Success");
+        return ResponseEntity.ok(null);
     }
 
     @Transactional
